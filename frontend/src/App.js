@@ -10,7 +10,7 @@ const TechEquityAnalyzer = () => {
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
 
   // API base URL - will be your deployed backend URL
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'feisty-nurturing-production-24a8.up.railway.app';
 
   // Load analysis history from localStorage on component mount
   useEffect(() => {
