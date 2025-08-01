@@ -5,8 +5,8 @@ const fetch = require('node-fetch');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Your Anthropic API key - keep this secure!
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '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';
+// Your Anthropic API key - loaded from environment variable only
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 // Middleware
 app.use(cors());
@@ -30,10 +30,10 @@ app.post('/api/analyze', async (req, res) => {
       });
     }
 
-    if (!ANTHROPIC_API_KEY || ANTHROPIC_API_KEY === 'YOUR_API_KEY_HERE') {
-      console.log('❌ No API key configured');
+    if (!ANTHROPIC_API_KEY) {
+      console.log('❌ ANTHROPIC_API_KEY environment variable not set');
       return res.status(500).json({ 
-        error: 'API key not configured' 
+        error: 'API key not configured - check environment variables' 
       });
     }
 
