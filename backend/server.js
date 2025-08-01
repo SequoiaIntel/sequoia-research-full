@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Your Anthropic API key - keep this secure!
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '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';
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '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';
 
 // Middleware
 app.use(cors());
@@ -44,6 +44,7 @@ app.post('/api/analyze', async (req, res) => {
       headers: {
         "Content-Type": "application/json",
         "x-api-key": ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
