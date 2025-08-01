@@ -5,8 +5,8 @@ const fetch = require('node-fetch');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Your Anthropic API key - keep this secure!
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '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';
+// Your Anthropic API key - loaded from environment variable only
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 
 // Middleware
 app.use(cors());
@@ -30,21 +30,31 @@ app.post('/api/analyze', async (req, res) => {
       });
     }
 
-    if (!ANTHROPIC_API_KEY || ANTHROPIC_API_KEY === 'YOUR_API_KEY_HERE') {
-      console.log('❌ No API key configured');
+    if (!ANTHROPIC_API_KEY) {
+      console.log('❌ ANTHROPIC_API_KEY environment variable not set');
       return res.status(500).json({ 
-        error: 'API key not configured' 
+        error: 'API key not configured - check environment variables' 
       });
     }
 
     console.log('🚀 Making request to Anthropic API...');
+    
+    // Debug logging to see exactly what headers we're sending
+    const headers = {
+      "Content-Type": "application/json",
+      "x-api-key": ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01"
+    };
+    
+    console.log('🔍 Headers being sent:', {
+      "Content-Type": "application/json",
+      "x-api-key": ANTHROPIC_API_KEY ? `${ANTHROPIC_API_KEY.substring(0, 10)}...` : 'MISSING',
+      "anthropic-version": "2023-06-01"
+    });
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-      },
+      headers: headers,
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
         max_tokens: 4000,
