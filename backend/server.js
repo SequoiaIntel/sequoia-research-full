@@ -38,14 +38,23 @@ app.post('/api/analyze', async (req, res) => {
     }
 
     console.log('🚀 Making request to Anthropic API...');
+    
+    // Debug logging to see exactly what headers we're sending
+    const headers = {
+      "Content-Type": "application/json",
+      "x-api-key": ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01"
+    };
+    
+    console.log('🔍 Headers being sent:', {
+      "Content-Type": "application/json",
+      "x-api-key": ANTHROPIC_API_KEY ? `${ANTHROPIC_API_KEY.substring(0, 10)}...` : 'MISSING',
+      "anthropic-version": "2023-06-01"
+    });
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01"
-      },
+      headers: headers,
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
         max_tokens: 4000,
